@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: juice-pos-fullstack
+    env: node
+    plan: free
+    rootDir: juice-pos/fullstack_backend
+    buildCommand: ""
+    startCommand: "node server.js"
+    healthCheckPath: /api/health
