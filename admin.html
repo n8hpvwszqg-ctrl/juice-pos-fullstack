@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>QRمنيو | لوحة التحكم</title>
+<style>
+:root{
+  --orange:#f28c28;
+  --orange-dark:#c96a12;
+  --orange-soft:#fff4ea;
+  --bg:#fffaf6;
+  --card:#ffffff;
+  --border:#f7d4b1;
+  --line:#f4e5d6;
+  --text:#3b2414;
+  --muted:#8a6a4a;
+  --green:#166534;
+  --green-soft:#edfdf2;
+  --red:#b91c1c;
+  --red-soft:#fff1f2;
+  --blue:#075985;
+  --blue-soft:#eef8ff;
+  --shadow:0 14px 28px rgba(249,115,22,.08);
+}
+*{box-sizing:border-box;font-family:Tahoma,Arial,sans-serif}
+body{margin:0;background:linear-gradient(180deg,#fffaf6,#fff7ef);color:var(--text)}
+.top{position:sticky;top:0;z-index:20;background:rgba(255,250,246,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(249,115,22,.12)}
+.top-inner{max-width:1200px;margin:auto;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--orange),var(--orange-dark));color:#fff;font-size:21px;font-weight:900}.brand-title{font-size:21px;font-weight:900;color:var(--orange-dark)}.brand-sub{font-size:12px;color:var(--muted)}
+.top-actions{display:flex;gap:8px;flex-wrap:wrap}
+.wrap{max-width:1200px;margin:auto;padding:16px}
+.layout{display:grid;grid-template-columns:420px 1fr;gap:16px;align-items:start}
+.card{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:16px;box-shadow:var(--shadow)}
+.title{font-size:18px;font-weight:900;color:var(--orange-dark);margin:0 0 6px}.sub{font-size:13px;color:var(--muted);line-height:1.8}
+.status{margin-top:12px;padding:12px 14px;border-radius:16px;background:#fff8f1;border:1px solid var(--border);font-size:13px;font-weight:700;color:#8d5a25}.status.ok{background:var(--green-soft);color:var(--green);border-color:#cbe9d6}.status.warn{background:#fff5d8;color:#8a5a00;border-color:#f1de9b}
+.box{padding:14px;border:1px solid var(--line);border-radius:18px;background:#fff;margin-top:12px}
+label{display:block;margin-bottom:6px;font-weight:800;color:var(--orange-dark)}
+.input{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:14px;background:#fff;color:var(--text);outline:none}.input:focus{border-color:var(--orange)}
+.stack{display:grid;gap:10px}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.pill{padding:8px 11px;border-radius:999px;background:var(--orange-soft);border:1px solid var(--border);font-size:12px;font-weight:800;color:#9b5a1a}
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.sections{display:grid;gap:12px;margin-top:14px}
+.section-card{border:1px solid var(--border);border-radius:18px;padding:14px;background:#fff}
+.section-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:10px}.section-num{font-size:12px;color:var(--muted);font-weight:700}.actions{display:flex;gap:6px;flex-wrap:wrap}
+.item-row{display:grid;grid-template-columns:1fr 140px auto;gap:8px;align-items:center;padding:10px 0;border-top:1px dashed var(--line)}.item-row:first-of-type{border-top:none}.item-desc{grid-column:1 / -1}
+.preview-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap;margin-bottom:12px}.badge{display:inline-block;padding:7px 10px;border-radius:999px;background:#fff7ed;color:#c2410c;border:1px solid var(--border);font-weight:800;font-size:12px}
+.preview-title{font-size:30px;font-weight:900;color:var(--orange-dark);margin:0;line-height:1.2}.preview-sub{margin:6px 0 0;color:var(--muted);line-height:1.8}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.chip{padding:8px 11px;border-radius:999px;background:#fff4ea;border:1px solid var(--border);color:var(--orange-dark);font-weight:800;font-size:13px;cursor:pointer}.chip.active{background:linear-gradient(90deg,var(--orange),var(--orange-dark));color:#fff}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}.stat{padding:14px;border:1px solid var(--line);border-radius:16px;background:#fff}.stat-label{font-size:12px;color:var(--muted);font-weight:700;margin-bottom:6px}.stat-value{font-size:22px;font-weight:900;color:var(--orange-dark)}
+.preview-surface{padding:18px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(180deg,#fffdfb,#fffaf6);overflow:visible}
+.editor-note{font-size:12px;color:var(--muted);margin:0 0 10px}
+.preview-hero{position:relative;min-height:560px;padding:12px;border:1px solid rgba(242,140,40,.16);border-radius:28px;background:linear-gradient(180deg,#fff9f3,#fff1e2);overflow:hidden;box-shadow:var(--shadow)}
+.preview-hero-grid{position:relative;display:grid;grid-template-columns:1fr;grid-template-areas:"video" "brand" "stats" "tabs";gap:12px;align-items:start;min-height:680px}
+.preview-editable{position:relative;user-select:none;touch-action:none;cursor:grab;transition:outline-color .15s ease, box-shadow .15s ease}
+.preview-editable.selected{outline:2px dashed var(--orange-dark);outline-offset:4px;box-shadow:0 0 0 4px rgba(249,115,22,.12)}
+.preview-editable.dragging{cursor:grabbing}
+.preview-hero-title{grid-area:brand;margin:0;color:var(--orange-dark);font-size:30px;font-weight:900;line-height:1.1;text-align:right;justify-self:stretch}
+.preview-hero-tabs{grid-area:tabs;justify-self:stretch;width:100%;overflow:visible;background:rgba(255,255,255,.76);border:1px solid rgba(242,140,40,.16);border-radius:22px;padding:12px 14px;box-shadow:var(--shadow-soft)}
+.preview-tabs-drag-handle{display:inline-flex;align-items:center;gap:6px;margin-bottom:10px;padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.92);border:1px dashed var(--border);font-size:12px;font-weight:800;color:#9b5a1a;cursor:grab}
+.preview-hero-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-start;overflow:visible;scrollbar-width:none;padding-bottom:0}
+.preview-hero-chips::-webkit-scrollbar{display:none}
+.preview-chip{white-space:nowrap;padding:10px 14px;border:1px solid rgba(255,255,255,.55);background:rgba(255,249,242,.94);color:#8a531d;border-radius:999px;font-weight:800;font-size:13px;min-width:132px}
+.preview-chip.active{background:var(--orange);color:#fff;border-color:var(--orange)}
+.preview-hero-stats{grid-area:stats;display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start;justify-items:stretch}
+.preview-stat{padding:14px 16px;border-radius:20px;background:rgba(255,251,247,.96);border:1px solid rgba(242,140,40,.18);box-shadow:var(--shadow-soft);width:100%}
+.preview-stat-label{color:var(--muted);font-size:12px;font-weight:800;margin-bottom:6px}
+.preview-stat-value{font-size:20px;color:var(--orange-dark);font-weight:900;line-height:1.2}
+.preview-video-card{grid-area:video;margin-top:0;background:#000;border:1px solid rgba(242,140,40,.16);border-radius:24px;box-shadow:var(--shadow);overflow:hidden;min-height:520px;display:flex;align-items:center;justify-content:center;width:100%}
+.preview-video-card video{display:block;width:100%;height:100%;min-height:520px;object-fit:cover;background:#000}
+.preview-video-placeholder{display:flex;align-items:center;justify-content:center;min-height:520px;padding:18px;text-align:center;color:#fff;font-weight:900;font-size:24px;background:linear-gradient(180deg,#b96a18,#6f3f10)}
+.preview-hero-desc{grid-area:brand;margin:6px 0 0;color:var(--muted);line-height:1.7;font-size:14px;max-width:none;justify-self:stretch;align-self:start;text-align:right}
+.items{display:grid;gap:10px;margin-top:16px}.item{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:14px;border:1px solid var(--border);border-radius:16px;background:#fff}.item-main{flex:1}.item-name{font-weight:900;font-size:17px;color:#6a3f16;margin-bottom:6px}.item-text{font-size:13px;color:var(--muted);line-height:1.8}.item-price{font-weight:900;color:var(--green);background:#f3ffe7;padding:10px 12px;border-radius:14px;white-space:nowrap}
+
+.preview-menu-like{position:relative;min-height:auto;padding:0;border:none;background:transparent;overflow:visible}
+.preview-menu-card{background:linear-gradient(180deg,#fff9f3,#fff1e2);border:1px solid rgba(242,140,40,.16);border-radius:28px;padding:14px;box-shadow:var(--shadow);overflow:hidden;width:100%}
+.preview-showcase-screen{position:relative;border-radius:24px;overflow:hidden;background:#000;min-height:360px;display:flex;align-items:center;justify-content:center;width:100%}
+.preview-showcase-screen video{display:block;width:100%;height:100%;min-height:360px;object-fit:cover;background:#000}
+.preview-video-placeholder{display:flex;align-items:center;justify-content:center;min-height:360px;padding:18px;text-align:center;color:#fff;font-weight:900;background:linear-gradient(180deg,#b96a18,#6f3f10);font-size:22px;width:100%}
+.preview-menu-meta{padding:14px 4px 8px;display:flex;flex-direction:column;gap:6px;width:100%}
+.preview-menu-title{font-size:30px;font-weight:900;color:var(--orange-dark);line-height:1.1}
+.preview-menu-subtitle{color:var(--muted);font-size:14px;line-height:1.7}
+.preview-menu-cards-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.preview-menu-stat{padding:14px 16px;border-radius:20px;background:rgba(255,251,247,.96);border:1px solid rgba(242,140,40,.18);box-shadow:var(--shadow-soft)}
+.preview-menu-tabs-wrap{margin-top:12px;background:rgba(255,255,255,.76);border:1px solid rgba(242,140,40,.16);border-radius:22px;padding:12px 14px;box-shadow:var(--shadow-soft);width:100%}
+.preview-menu-tabs{display:flex;flex-wrap:wrap;gap:8px;overflow:visible;padding:0;scrollbar-width:none;align-items:center;justify-content:flex-start}
+.preview-chip{white-space:nowrap;padding:10px 14px;border:1px solid rgba(255,255,255,.55);background:rgba(255,249,242,.94);color:#8a531d;border-radius:999px;font-weight:800;font-size:13px;min-width:132px}
+.preview-chip.active{background:var(--orange);color:#fff;border-color:var(--orange);box-shadow:0 8px 20px rgba(242,140,40,.22)}
+@media (max-width:980px){.preview-hero-grid{grid-template-columns:1fr;grid-template-areas:"video" "brand" "stats" "tabs";min-height:auto}.preview-hero-stats{grid-template-columns:1fr}.preview-video-card,.preview-video-card video,.preview-video-placeholder{min-height:300px}}
+.empty{padding:22px;text-align:center;color:var(--muted);font-weight:700}
+button{border:none;border-radius:14px;padding:11px 14px;font-weight:800;cursor:pointer}.primary{background:linear-gradient(90deg,var(--orange),var(--orange-dark));color:#fff}.secondary{background:#fff;color:var(--orange-dark);border:1px solid var(--border)}.blue{background:var(--blue-soft);color:var(--blue)}.red{background:var(--red-soft);color:var(--red)}.ghost{background:transparent;color:#9a5b18;border:1px dashed var(--border)}
+.toast{position:fixed;left:16px;bottom:16px;z-index:40;background:#2f7d32;color:#fff;padding:12px 14px;border-radius:14px;box-shadow:var(--shadow);display:none;font-weight:800}.toast.show{display:block}
+@media (max-width:980px){.layout{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.quick{grid-template-columns:1fr 1fr}}
+@media (max-width:700px){.item-row,.stats,.quick{grid-template-columns:1fr}.top-actions{width:100%}button{width:100%}}
+
+.preview-sections-pane{display:flex;flex-direction:column;gap:12px;min-width:0}
+.preview-items-wrap{border:1px solid var(--line);border-radius:20px;background:#fff;padding:12px;min-height:620px}
+@media (max-width:980px){.preview-surface{grid-template-columns:1fr}.preview-items-wrap{min-height:auto}}
+
+.mobile-preview-card{padding:12px;border-radius:24px}
+.mobile-preview-split{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:stretch}
+.mobile-preview-side{display:flex;flex-direction:column;gap:10px;min-width:0}
+.preview-menu-meta{padding:6px 2px 0;display:flex;flex-direction:column;gap:6px}
+.preview-menu-title{font-size:24px;font-weight:900;color:var(--orange-dark);line-height:1.1}
+.preview-menu-subtitle{font-size:13px;line-height:1.6;color:var(--muted)}
+.preview-menu-cards-row{display:grid;grid-template-columns:1fr;gap:8px}
+.preview-menu-stat{padding:14px;border-radius:18px;background:rgba(255,251,247,.98);border:1px solid rgba(242,140,40,.18);box-shadow:var(--shadow-soft)}
+.preview-menu-tabs-wrap{background:rgba(255,255,255,.76);border:1px solid rgba(242,140,40,.16);border-radius:18px;padding:10px;box-shadow:var(--shadow-soft)}
+.preview-menu-tabs{display:flex;flex-direction:column;gap:8px;overflow:visible;padding:0}
+.preview-chip{white-space:normal;padding:11px 12px;border:1px solid rgba(255,255,255,.55);background:rgba(255,249,242,.94);color:#8a531d;border-radius:16px;font-weight:800;font-size:13px;min-width:auto;text-align:center}
+.preview-chip.active{background:var(--orange);color:#fff;border-color:var(--orange)}
+
+    .preview-surface{padding:18px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(180deg,#fffdfb,#fffaf6);overflow:visible}
+    .mobile-preview-frame{width:390px;max-width:100%;margin:0 auto}
+    .preview-hero{position:relative;min-height:520px;padding:12px;border:1px solid rgba(242,140,40,.16);border-radius:24px;background:linear-gradient(180deg,#fffaf5,#fff1e4);overflow:hidden;box-shadow:var(--shadow);width:100%;margin:0 auto}
+    .preview-menu-card{background:transparent;border:none;border-radius:0;padding:0;box-shadow:none;overflow:visible;width:100%}
+    .preview-mobile-split{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:stretch}
+    .preview-showcase-screen{position:relative;border-radius:24px;overflow:hidden;background:#000;min-height:340px;display:flex;align-items:center;justify-content:center;width:100%;box-shadow:0 18px 40px rgba(0,0,0,.20);border:1px solid rgba(255,255,255,.12)}
+    .preview-showcase-screen video{display:block;width:100%;height:100%;min-height:340px;object-fit:cover;background:#000;transform:scale(1.02)}
+    .preview-video-placeholder{display:flex;align-items:center;justify-content:center;min-height:340px;padding:18px;text-align:center;color:#fff;font-weight:900;background:linear-gradient(180deg,#b96a18,#6f3f10);font-size:22px;width:100%}
+    .preview-mobile-sections{background:rgba(255,255,255,.86);border:1px solid rgba(242,140,40,.14);border-radius:18px;padding:10px;display:flex;flex-direction:column;gap:8px;min-height:240px}
+    .preview-mobile-sections-title{font-size:12px;font-weight:800;color:var(--muted)}
+    .preview-menu-meta{padding:12px 2px 6px;display:flex;flex-direction:column;gap:6px;width:100%}
+    .preview-menu-title{font-size:24px;font-weight:900;color:var(--orange-dark);line-height:1.1;text-align:right;justify-self:stretch}
+    .preview-menu-subtitle{color:var(--muted);font-size:13px;line-height:1.7}
+    .preview-menu-cards-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+    .preview-menu-stat{padding:14px;border-radius:18px;background:rgba(255,251,247,.98);border:1px solid rgba(242,140,40,.18);box-shadow:var(--shadow-soft)}
+    .preview-menu-tabs-wrap{margin-top:10px;background:rgba(255,255,255,.82);border:1px solid rgba(242,140,40,.14);border-radius:18px;padding:10px 12px;box-shadow:var(--shadow-soft);display:none}
+    .preview-menu-tabs{display:grid;grid-template-columns:1fr;gap:8px;overflow:visible;padding:0;align-items:stretch;justify-content:stretch}
+    .preview-chip{white-space:normal;padding:12px 12px;border:1px solid rgba(242,140,40,.16);background:linear-gradient(180deg,#fffaf4,#fff2e6);color:#8a531d;border-radius:16px;font-weight:800;font-size:12px;min-width:0;text-align:center;box-shadow:var(--shadow-soft)}
+    .preview-chip.active{background:var(--orange);color:#fff;border-color:var(--orange)}
+    .editor-note{font-size:12px;color:var(--muted);margin:0 0 10px;text-align:right}
+    @media (max-width:980px){.layout{grid-template-columns:1fr}.mobile-preview-frame{width:100%}}
+    
+
+    .preview-showcase-screen::after{content:'';position:absolute;inset:auto 0 0 0;height:36%;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.22));pointer-events:none}
+
+    .preview-video-screen-badge{position:absolute;top:10px;right:10px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.16);backdrop-filter:blur(8px);color:#fff;font-size:11px;font-weight:800;border:1px solid rgba(255,255,255,.18)}
+    .preview-video-help{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.7}
+    
+
+    .sync-speed-badge{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;background:#ecfdf3;color:#18794e;border:1px solid #bfe6cc;font-size:12px;font-weight:800}
+    .control-note{padding:10px 12px;border-radius:14px;background:#fff8f1;border:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.8}
+    .video-control-box{padding:12px;border:1px solid var(--line);border-radius:18px;background:#fff}
+    
+
+    .hero-sections-label{font-size:12px;font-weight:800;color:var(--muted);margin-bottom:8px}
+
+    .status-strong{padding:12px 14px;border-radius:14px;background:#fff8f1;border:1px solid var(--border);font-size:12px;font-weight:800;color:#8d5a25}
+    .status-strong.ok{background:#ecfdf3;color:#18794e;border-color:#bfe6cc}
+    .status-strong.warn{background:#fff7e6;color:#9a5b18;border-color:#f3d5a8}
+    .publish-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    
+
+    .quick-actions-bar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}
+    .quick-actions-bar button{flex:1 1 160px}
+    .panel-soft{background:#fffdf9;border:1px solid var(--line);border-radius:18px;padding:14px}
+    .field label{font-size:12px;font-weight:800;color:var(--muted);margin-bottom:6px;display:block}
+    .section-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow-soft)}
+    .section-card + .section-card{margin-top:12px}
+    .section-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+    .section-title-mini{font-size:13px;font-weight:900;color:var(--orange-dark)}
+    .subtle-tip{font-size:12px;color:var(--muted);line-height:1.7}
+    .sticky-top-actions{position:sticky;top:10px;z-index:30;background:linear-gradient(180deg,rgba(255,253,251,.96),rgba(255,253,251,.92));backdrop-filter:blur(8px);padding:10px;border:1px solid var(--line);border-radius:18px;margin-bottom:12px}
+    
+
+    .simple-panel{display:grid;gap:12px}.simple-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow-soft)}.simple-card h3{margin:0 0 10px;font-size:15px}.simple-tip{font-size:12px;color:var(--muted);line-height:1.7}.compact-actions{display:flex;gap:8px;flex-wrap:wrap}.sections{display:grid;gap:12px}.section-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px}.section-head{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.item-row{display:grid;grid-template-columns:1fr 120px auto;gap:8px;align-items:start}.item-desc{grid-column:1/-1}.preview-mobile-sections{min-height:340px;overflow:auto}.preview-menu-tabs{max-height:270px;overflow:auto}.control-note{font-size:12px;line-height:1.7}
+
+    .preview-hero-items-panel{margin-top:12px;background:rgba(255,255,255,.94);border:1px solid rgba(242,140,40,.14);border-radius:22px;padding:12px;box-shadow:var(--shadow-soft)}
+    .preview-hero-items-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap;margin-bottom:10px}
+    .preview-hero-items-title{font-size:16px;font-weight:900;color:#7a4216}
+    .preview-hero-items-sub{font-size:12px;color:var(--muted);margin-top:4px}
+    .preview-hero-items-count{padding:7px 10px;border-radius:999px;background:#fff3e5;border:1px solid rgba(242,140,40,.14);font-size:12px;font-weight:800;color:#8a531d}
+    .preview-hero-items-grid{display:grid;grid-template-columns:1fr;gap:8px;max-height:250px;overflow:auto}
+    .preview-hero-item{background:#fff;border:1px solid rgba(242,140,40,.12);border-radius:16px;padding:10px 12px;display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .preview-hero-item-name{font-size:13px;font-weight:900;color:#6a3815}
+    .preview-hero-item-price{white-space:nowrap;font-size:12px;font-weight:900;color:var(--orange)}
+
+    .ads-manager{display:grid;gap:12px}
+    .ad-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px;box-shadow:var(--shadow-soft)}
+    .ad-head{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+    .ad-title-mini{font-size:13px;font-weight:900;color:var(--orange-dark)}
+    .ad-grid{display:grid;grid-template-columns:1fr 120px;gap:8px}
+    .ad-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .ads-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .ads-note{font-size:12px;color:var(--muted);line-height:1.7}
+
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <div class="logo">🍊</div>
+      <div>
+        <div class="brand-title">QRمنيو</div>
+        <div class="brand-sub">لوحة تحكم بسيطة وواضحة</div>
+      </div>
+    </div>
+    <div class="top-actions">
+      <button class="primary" onclick="publishMenu()">نشر التحديثات</button>
+      <button class="secondary" onclick="saveDraft()">حفظ المسودة</button>
+      <button class="secondary" onclick="loadPublished()">تحميل المنشور</button>
+      <button class="secondary" type="button" onclick="openLinkedMenu()">فتح المنيو</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="layout">
+    <div class="card">
+      <h2 class="title">تعديل المنيو</h2>
+      <div class="sub">عدّل الأقسام والأصناف ثم انشر، وسيظهر التحديث مباشرة على QRمنيو.</div>
+
+      <div id="statusStrip" class="status">
+        الحالة الحالية: <strong id="statusText">كل شيء مستقر</strong>
+      </div>
+
+      <div class="box">
+        <div class="stack">
+          <div>
+            <label>عنوان المنيو</label>
+            <input id="titleInput" class="input">
+          </div>
+          <div>
+            <label>الوصف المختصر</label>
+            <input id="introInput" class="input">
+          </div>
+          <div>
+            <label>اسم الهوية الظاهر</label>
+            <input id="logoTextInput" class="input">
+          </div>
+          <div>
+            <label>اللون الأساسي</label>
+            <input id="accentInput" class="input" placeholder="#f97316">
+          </div>
+          <div>
+            <label>عنوان بصري أعلى المنيو</label>
+            <input id="heroTitleInput" class="input">
+          </div>
+          <div>
+            <label>وصف بصري أعلى المنيو</label>
+            <input id="heroSubtitleInput" class="input">
+          </div>
+          <div>
+            <label>رابط الفيديو</label>
+            <input id="videoSrcInput" class="input" placeholder="ضع رابط الفيديو بعد رفعه">
+          </div>
+          <div>
+            <label>تفعيل الفيديو</label>
+            <input id="videoEnabledInput" class="input" placeholder="true أو false">
+          </div>
+          <div>
+            <label>رابط المنيو المرتبط</label>
+            <input id="linkedMenuUrlInput" class="input" placeholder="ضع رابط المنيو هنا ليعمل زر فتح المنيو">
+          </div>
+        </div>
+        <div class="box" style="margin-top:12px">
+          <div class="sub" style="margin-bottom:10px">تحكم الهيدر</div>
+          <div class="stack">
+            <div>
+              <label>العنصر المتحكم فيه</label>
+              <select id="layoutTargetInput" class="input">
+                <option value="title">برتقانه</option>
+                <option value="tabs">الأقسام</option>
+                <option value="itemsCard">بطاقة عدد الأصناف</option>
+                <option value="currentCard">بطاقة القسم الحالي</option>
+                <option value="videoCard">بطاقة الفيديو الكبيرة</option>
+              </select>
+            </div>
+            <div id="syncHealthBox" class="status-strong">جاهز للعمل</div><div class="pills">
+              <button class="btn secondary" type="button" onclick="moveLayout('right')">يمين</button>
+              <button class="btn secondary" type="button" onclick="moveLayout('left')">يسار</button>
+              <button class="btn secondary" type="button" onclick="moveLayout('up')">أعلى</button>
+              <button class="btn secondary" type="button" onclick="moveLayout('down')">أسفل</button>
+              <button class="btn secondary" type="button" onclick="scaleLayout('up')">تكبير</button>
+              <button class="btn secondary" type="button" onclick="scaleLayout('down')">تصغير</button>
+              <button class="btn secondary" type="button" onclick="centerLayoutTarget()">توسيط</button>
+              <button class="btn secondary" type="button" onclick="resizeLayout('width','up')">عرض +</button>
+              <button class="btn secondary" type="button" onclick="resizeLayout('width','down')">عرض -</button>
+              <button class="btn secondary" type="button" onclick="resizeLayout('height','up')">ارتفاع +</button>
+              <button class="btn secondary" type="button" onclick="resizeLayout('height','down')">ارتفاع -</button>
+              <button class="btn blue" type="button" onclick="resizeHeroFrame('width','up')">إطار الهيدر عرض +</button>
+              <button class="btn blue" type="button" onclick="resizeHeroFrame('width','down')">إطار الهيدر عرض -</button>
+              <button class="btn blue" type="button" onclick="resizeHeroFrame('height','up')">إطار الهيدر ارتفاع +</button>
+              <button class="btn blue" type="button" onclick="resizeHeroFrame('height','down')">إطار الهيدر ارتفاع -</button>
+              <button class="btn secondary" type="button" onclick="resetHeroFrame()">إرجاع إطار الهيدر</button>
+              <button class="btn secondary" type="button" onclick="hideLayoutTarget()">إخفاء العنصر</button>
+              <button class="btn secondary" type="button" onclick="showAllLayoutTargets()">إظهار الكل</button>
+              <button class="btn secondary" type="button" onclick="resetLayoutTarget()">إرجاع العنصر</button>
+            </div>
+            <div class="toolbar-group">
+              <div class="toolbar-label">إطار المعاينة</div>
+              <button class="btn secondary" type="button" onclick="resizePreviewFrame('width','up')">عرض +</button>
+              <button class="btn secondary" type="button" onclick="resizePreviewFrame('width','down')">عرض -</button>
+              <button class="btn secondary" type="button" onclick="resizePreviewFrame('height','up')">ارتفاع +</button>
+              <button class="btn secondary" type="button" onclick="resizePreviewFrame('height','down')">ارتفاع -</button>
+              <button class="btn secondary" type="button" onclick="resetPreviewFrame()">إرجاع الإطار</button>
+            </div>
+          </div>
+        </div>
+        <div class="pills">
+          <div class="pill" id="draftInfo">مسودة</div>
+          <div class="pill" id="publishInfo">منشور</div>
+          <div class="pill" id="lastPublishInfo">آخر نشر: —</div>
+        </div>
+      </div>
+
+      <div class="quick">
+        <button class="blue" onclick="addSection()">+ قسم جديد</button>
+        <button class="secondary" onclick="cleanMenuData()">تنظيف البيانات</button>
+        <button class="ghost" onclick="resetDraft()">إرجاع الأصل</button><button class="secondary" onclick="saveDraftNow()">حفظ الآن</button><button class="secondary" onclick="pushLivePreview()">مزامنة الآن</button><button class="blue" onclick="publishNow()">نشر التحديثات</button>
+      </div>
+
+      <div class="control-note" id="dataSummaryBox">ملخص البيانات يظهر هنا</div><div class="control-note">ابدأ من الأقسام: عدّل الاسم، ثم الأصناف، ثم اضغط نشر التحديثات.</div><div id="sectionsWrap" class="sections"></div>
+    </div>
+
+    <div class="card">
+      <div class="preview-top">
+        <div>
+          <div class="badge">معاينة مباشرة</div> <div class="sync-speed-badge">مزامنة سريعة</div>
+          <h1 id="previewTitle" class="preview-title"></h1>
+          <p id="previewIntro" class="preview-sub"></p>
+        </div>
+      </div>
+
+      <div class="panel-soft">
+      <h3>إدارة الإعلانات</h3>
+      <div class="ads-note">أضف أكثر من فيديو، رتّبهم، وحدد مدة كل إعلان. التقليب يتم تلقائيًا في المنيو.</div>
+      <div class="ads-toolbar">
+        <button class="blue" type="button" onclick="addAd()">+ إعلان جديد</button>
+      </div>
+      <div id="adsManagerWrap" class="ads-manager"></div>
+    </div><div class="control-note">لو الفيديو لم يظهر، جرّب رابطًا مباشرًا بصيغة mp4 أو webm ثم اضغط مزامنة الآن. التحديثات السريعة مفعلة.</div><div class="preview-surface" id="previewSurface">
+        <div>
+          <p class="editor-note">كل شيء هنا مبسّط: المحتوى، الهيدر، والفيديو، مع تحديث سريع في المنيو.</p>
+          <div class="mobile-preview-frame">
+          <div class="preview-hero preview-menu-like">
+            <div class="preview-menu-card">
+              <div class="preview-mobile-split">
+                <div id="previewVideoCard" class="preview-showcase-screen preview-editable" data-layout-key="videoCard">
+                  <video id="previewHeroVideo" autoplay muted loop playsinline webkit-playsinline preload="metadata"></video>
+                  <div id="previewVideoPlaceholder" class="preview-video-placeholder">شاشة الإعلانات</div>
+                  <div class="preview-video-screen-badge">شاشة إعلانات</div>
+                </div>
+                <div class="preview-mobile-sections">
+                  <div class="preview-mobile-sections-title">بطاقات الأقسام</div><div class="hero-sections-label">اختَر القسم</div>
+                  <div id="sectionChips" class="preview-menu-tabs"></div>
+                </div>
+              </div>
+              <div class="preview-menu-meta">
+                <div class="brand-badge" id="previewBrandName">برتقانه</div>
+                <div id="previewHeroTitle" class="preview-menu-title preview-editable" data-layout-key="title"></div>
+                <div id="previewHeroDesc" class="preview-menu-subtitle">معاينة مباشرة مطابقة للموبايل</div>
+              </div>
+              <div class="preview-menu-cards-row">
+                <div id="previewItemsCard" class="preview-menu-stat preview-editable" data-layout-key="itemsCard">
+                  <div class="preview-stat-label">عدد الأصناف</div>
+                  <div class="preview-stat-value" id="statItems">0</div>
+                </div>
+                <div id="previewCurrentCard" class="preview-menu-stat preview-editable" data-layout-key="currentCard">
+                  <div class="preview-stat-label">القسم الحالي</div>
+                  <div class="preview-stat-value" id="statCurrent">—</div>
+                </div>
+              </div>
+              <div class="preview-hero-items-panel">
+                <div class="preview-hero-items-head">
+                  <div>
+                    <div class="preview-hero-items-title" id="previewHeroItemsTitle">اختر قسمًا</div>
+                    <div class="preview-hero-items-sub" id="previewHeroItemsSub">ستظهر الأصناف هنا</div>
+                  </div>
+                  <div class="preview-hero-items-count" id="previewHeroItemsCountPill">0 صنف</div>
+                </div>
+                <div id="previewItems" class="preview-items"></div>
+              </div>
+              <div id="previewHeroTabsWrap" class="preview-menu-tabs-wrap preview-editable" data-layout-key="tabs"></div>
+            </div>
+          </div>
+          <div id="previewItems" class="items"></div>
+        </div>
+      </div>
+    </div>v>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const ORIGINAL_DATA = {
+  title: 'برتقانه',
+  intro: '',
+  coverImage: '',
+  branding: {
+    logoText: 'برتقانه',
+    accent: '#f97316',
+    heroTitle: 'برتقانه',
+    heroSubtitle: 'عصائر فريش وسموزي بطعم منعش وتحضير يومي'
+  },
+  ads: [],
+  video: {
+    enabled: false,
+    src: '',
+    opacity: 0.08,
+    blur: 0,
+    height: 250,
+    fit: 'cover',
+    position: 'center'
+  },
+  layoutControls: {
+    title: { x: 0, y: 0, scale: 1, hidden: false },
+    tabs: { x: 0, y: 0, scale: 1, width: null, height: null, hidden: false },
+    itemsCard: { x: 0, y: 0, scale: 1, width: null, height: null, hidden: false },
+    currentCard: { x: 0, y: 0, scale: 1, width: null, height: null, hidden: false },
+    videoCard: { x: 0, y: 0, scale: 1, width: null, height: null, hidden: false },
+    heroFrame: { width: null, height: null }
+  },
+  textSizes: { section: 30, item: 21, price: 20, desc: 14 },
+  instapay: { visible: false, name: '', id: '', note: '', qr: '' },
+  sections: [
+    {
+      name: 'عصائر فريش',
+      subtitle: '',
+      visible: true,
+      items: [
+        { name: 'موز بلبن', desc: '', price: '45.00 ج', visible: true },
+        { name: 'بلح بلبن', desc: '', price: '50.00 ج', visible: true },
+        { name: 'رومان', desc: '', price: '70.00 ج', visible: true },
+        { name: 'ليمون نعناع', desc: '', price: '45.00 ج', visible: true },
+        { name: 'ليمون', desc: '', price: '40.00 ج', visible: true },
+        { name: 'كيوي', desc: '', price: '75.00 ج', visible: true },
+        { name: 'كنتالوب', desc: '', price: '45.00 ج', visible: true },
+        { name: 'بطيخ', desc: '', price: '45.00 ج', visible: true },
+        { name: 'فراوله', desc: '', price: '50.00 ج', visible: true },
+        { name: 'جوافه', desc: '', price: '45.00 ج', visible: true },
+        { name: 'برتقان', desc: '', price: '45.00 ج', visible: true }
+      ]
+    },
+    {
+      name: 'اسموزي',
+      subtitle: '',
+      visible: true,
+      items: [
+        { name: 'بوبا', desc: '', price: '80.00 ج', visible: true },
+        { name: 'مانجو خوخ', desc: '', price: '60.00 ج', visible: true },
+        { name: 'اناناس', desc: '', price: '50.00 ج', visible: true },
+        { name: 'كيوي', desc: '', price: '75.00 ج', visible: true },
+        { name: 'فراوله', desc: '', price: '50.00 ج', visible: true },
+        { name: 'ليمون نعناع', desc: '', price: '45.00 ج', visible: true },
+        { name: 'بطيخ', desc: '', price: '45.00 ج', visible: true },
+        { name: 'بلو بيري', desc: '', price: '45.00 ج', visible: true },
+        { name: 'اسموزي مانجو', desc: '', price: '45.00 ج', visible: true }
+      ]
+    },
+    {
+      name: 'صودا',
+      subtitle: '',
+      visible: true,
+      items: [
+        { name: 'صودا بوبا', desc: '', price: '75.00 ج', visible: true },
+        { name: 'جيلي كولا', desc: '', price: '50.00 ج', visible: true },
+        { name: 'ريد بول', desc: '', price: '60.00 ج', visible: true },
+        { name: 'صودا اناناس', desc: '', price: '50.00 ج', visible: true },
+        { name: 'باشون', desc: '', price: '50.00 ج', visible: true },
+        { name: 'بلو بيري', desc: '', price: '45.00 ج', visible: true },
+        { name: 'صن شاين', desc: '', price: '45.00 ج', visible: true }
+      ]
+    },
+    {
+      name: 'مانجو',
+      subtitle: '',
+      visible: true,
+      items: [
+        { name: 'مانجو كيوي', desc: '', price: '80.00 ج', visible: true },
+        { name: 'مانجو ايس كريم', desc: '', price: '70.00 ج', visible: true },
+        { name: 'مانجو خوخ', desc: '', price: '60.00 ج', visible: true },
+        { name: 'مانجو موز', desc: '', price: '60.00 ج', visible: true },
+        { name: 'مانجو', desc: '', price: '60.00 ج', visible: true }
+      ]
+    },
+    {
+      name: 'زباااااادو',
+      subtitle: '',
+      visible: true,
+      items: [
+        { name: 'زبادي فواكه', desc: '', price: '60.00 ج', visible: true },
+        { name: 'زبادي مانجو', desc: '', price: '60.00 ج', visible: true },
+        { name: 'زبادي ساده', desc: '', price: '45.00 ج', visible: true }
+      ]
+    },
+    {
+      name: 'كوكتيل خلاط',
+      subtitle: '',
+      visible: true,
+      items: [
+        { name: 'كوكتيل نص ضربه', desc: '', price: '65.00 ج', visible: true },
+        { name: 'سيمبا', desc: '', price: '60.00 ج', visible: true },
+        { name: 'الاصفهاني', desc: '', price: '70.00 ج', visible: true },
+        { name: 'الصاروخ', desc: '', price: '70.00 ج', visible: true },
+        { name: 'انتعاش', desc: '', price: '60.00 ج', visible: true },
+        { name: 'الساحر', desc: '', price: '70.00 ج', visible: true },
+        { name: 'بطوط', desc: '', price: '60.00 ج', visible: true },
+        { name: 'شوربة عدس', desc: '', price: '60.00 ج', visible: true },
+        { name: 'فيتامين سي', desc: '', price: '60.00 ج', visible: true }
+      ]
+    },
+    {
+      name: 'مشروبات الطاقه',
+      subtitle: '',
+      visible: true,
+      items: [
+      ]
+    },
+    {
+      name: 'رضعات الاسد',
+      subtitle: '',
+      visible: true,
+      items: [
+        { name: 'رضعة الفيل', desc: '', price: '70.00 ج', visible: true },
+        { name: 'رضعة الاسد', desc: '', price: '70.00 ج', visible: true }
+      ]
+    },
+    {
+      name: 'ميلك شيك',
+      subtitle: '',
+      visible: true,
+      items: [
+        { name: 'لوتس', desc: '', price: '70.00 ج', visible: true },
+        { name: 'اوريو', desc: '', price: '65.00 ج', visible: true },
+        { name: 'فانيليا', desc: '', price: '60.00 ج', visible: true },
+        { name: 'ميلك شيك بلو بيري', desc: '', price: '50.00 ج', visible: true },
+        { name: 'ميلك شيك فراوله', desc: '', price: '50.00 ج', visible: true },
+        { name: 'شيكولاته', desc: '', price: '60.00 ج', visible: true }
+      ]
+    },
+    {
+      name: 'القصب',
+      subtitle: '',
+      visible: true,
+      items: [
+        { name: 'دوم بلبن', desc: '', price: '45.00 ج', visible: true },
+        { name: 'دوم', desc: '', price: '35.00 ج', visible: true },
+        { name: 'تمر', desc: '', price: '30.00 ج', visible: true },
+        { name: 'قصب فانيليا', desc: '', price: '35.00 ج', visible: true },
+        { name: 'قصب', desc: '', price: '25.00 ج', visible: true }
+      ]
+    },
+    {
+      name: 'ايس كريم',
+      subtitle: '',
+      visible: true,
+      items: [
+        { name: '2 بولة ايس كريم', desc: '', price: '45.00 ج', visible: true },
+        { name: '1 بولهايس كريم', desc: '', price: '30.00 ج', visible: true }
+      ]
+    },
+    {
+      name: 'كانز ومياه',
+      subtitle: '',
+      visible: true,
+      items: [
+        { name: 'مياه', desc: '', price: '10.00 ج', visible: true },
+        { name: 'بيبسي2', desc: '', price: '25.00 ج', visible: true },
+        { name: 'بيبسي', desc: '', price: '30.00 ج', visible: true }
+      ]
+    },
+    {
+      name: 'ازايز عصبر',
+      subtitle: '',
+      visible: true,
+      items: [
+        { name: 'ازازة فراوله', desc: '', price: '75.00 ج', visible: true },
+        { name: 'ازازة بطيخ', desc: '', price: '75.00 ج', visible: true },
+        { name: 'ازازة مانجو', desc: '', price: '90.00 ج', visible: true },
+        { name: 'لتر برتقان', desc: '', price: '75.00 ج', visible: true }
+      ]
+    },
+    {
+      name: 'كوبيات فاضيه',
+      subtitle: '',
+      visible: true,
+      items: [
+        { name: 'كوباية ثلج', desc: '', price: '5.00 ج', visible: true }
+      ]
+    }
+  ]
+};
+
+const DRAFT_KEY = 'qrmenu_draft_data';
+const LIVE_PREVIEW_KEY = 'qrmenu_live_preview_data';
+const PUBLISHED_KEY = 'qrmenu_published_data';
+const VERSION_KEY = 'qrmenu_published_data__version';
+const LIVE_CHANNEL_NAME = 'qrmenu_live_channel';
+const API_MENU_URL = `${window.location.origin}/api/menu`;
+const liveChannel = typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel(LIVE_CHANNEL_NAME) : null;
+let liveSyncTimer = null;
+
+async function loadFromApi(){
+  try {
+    const res = await fetch(API_MENU_URL, { cache: 'no-store' });
+    if(!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+async function saveToApi(data){
+  const res = await fetch(API_MENU_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  if(!res.ok) throw new Error('save_failed');
+  return true;
+}
+
+function clone(v){ return JSON.parse(JSON.stringify(v)); }
+function safeParse(value, fallback){ try { return JSON.parse(value); } catch { return fallback; } }
+function esc(v){ return String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function nowText(ts){ if(!ts) return '—'; const d = new Date(Number(ts)); if(Number.isNaN(d.getTime())) return '—'; return d.toLocaleTimeString('ar-EG',{hour:'numeric',minute:'2-digit'}); }
+
+function normalizeMenuData(data){
+  const next = clone(data || {});
+  next.title = String(next.title || 'QRمنيو').trim();
+  next.intro = String(next.intro || '').trim();
+  next.branding = {
+    logoText: String(next.branding?.logoText || next.title || 'QRمنيو').trim() || 'QRمنيو',
+    accent: String(next.branding?.accent || '#f97316').trim() || '#f97316',
+    heroTitle: String(next.branding?.heroTitle || '').trim(),
+    heroSubtitle: String(next.branding?.heroSubtitle || '').trim(),
+    linkedMenuUrl: String(next.branding?.linkedMenuUrl || '').trim()
+  };
+  next.ads = Array.isArray(next.ads) ? next.ads.map(ad => ({
+    title: String(ad?.title || '').trim(),
+    src: String(ad?.src || '').trim(),
+    duration: Math.max(3, Number(ad?.duration || 8) || 8),
+    enabled: ad?.enabled !== false
+  })) : [];
+  next.video = {
+    enabled: next.video?.enabled === true,
+    src: String(next.video?.src || '').trim(),
+    opacity: Number(next.video?.opacity ?? 0.08) || 0.08,
+    blur: Number(next.video?.blur ?? 0) || 0,
+    height: Number(next.video?.height ?? 250) || 250,
+    fit: String(next.video?.fit || 'cover').trim() || 'cover',
+    position: String(next.video?.position || 'center').trim() || 'center'
+  };
+  const baseLayout = ORIGINAL_DATA.layoutControls;
+  next.layoutControls = {
+    title: { ...baseLayout.title, ...(next.layoutControls?.title || {}) },
+    tabs: { ...baseLayout.tabs, ...(next.layoutControls?.tabs || {}) },
+    itemsCard: { ...baseLayout.itemsCard, ...(next.layoutControls?.itemsCard || {}) },
+    currentCard: { ...baseLayout.currentCard, ...(next.layoutControls?.currentCard || {}) },
+    videoCard: { ...baseLayout.videoCard, ...(next.layoutControls?.videoCard || {}) }
+  };
+  ['tabs','itemsCard','currentCard','videoCard'].forEach(key => {
+    const item = next.layoutControls[key] || {};
+    next.layoutControls[key].width = item.width == null || item.width === '' ? null : Number(item.width) || null;
+    next.layoutControls[key].height = item.height == null || item.height === '' ? null : Number(item.height) || null;
+  });
+  next.sections = (next.sections || [])
+    .map(section => ({
+      name: String(section.name || '').trim() || 'قسم جديد',
+      subtitle: String(section.subtitle || '').trim() || 'أصناف وأسعار',
+      visible: section.visible !== false,
+      items: (section.items || [])
+        .map(item => ({
+          name: String(item.name || '').trim(),
+          desc: String(item.desc || '').trim(),
+          price: String(item.price || '').trim(),
+          visible: item.visible !== false,
+        }))
+        .filter(item => item.name || item.price || item.desc)
+        .sort((a, b) => {
+          const priceA = parseFloat(String(a.price || '').replace(/[^0-9.]/g, '')) || 0;
+          const priceB = parseFloat(String(b.price || '').replace(/[^0-9.]/g, '')) || 0;
+          return priceA - priceB;
+        })
+    }))
+    .filter(section => section.name);
+  return next;
+}
+
+function ensureSectionShape(section){
+  return {
+    name: String(section?.name || 'قسم جديد').trim() || 'قسم جديد',
+    subtitle: String(section?.subtitle || 'أصناف وأسعار').trim() || 'أصناف وأسعار',
+    visible: section?.visible !== false,
+    items: Array.isArray(section?.items) ? section.items : []
+  };
+}
+
+function ensureDraftShape(){
+  if(!draftData || typeof draftData !== 'object') draftData = clone(ORIGINAL_DATA);
+  if(!Array.isArray(draftData.sections)) draftData.sections = [];
+  draftData.sections = draftData.sections.map(ensureSectionShape);
+}
+
+let draftData = safeParse(localStorage.getItem(DRAFT_KEY), null);
+let publishedData = safeParse(localStorage.getItem(PUBLISHED_KEY), clone(ORIGINAL_DATA)) || clone(ORIGINAL_DATA);
+if(!draftData) draftData = clone(publishedData);
+draftData = normalizeMenuData(draftData);
+publishedData = normalizeMenuData(publishedData);
+ensureDraftShape();
+let activeSection = 0;
+let dirty = false;
+
+function setStorageSafe(key, value){
+  try {
+    localStorage.setItem(key, value);
+    return true;
+  } catch {
+    showToast('تعذر الحفظ على الجهاز');
+    return false;
+  }
+}
+
+let isPublishing = false;
+let isSaving = false;
+let isLoadingPublished = false;
+
+function showToast(text){
+  const el = document.getElementById('toast');
+  el.textContent = text;
+  el.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => el.classList.remove('show'), 1800);
+}
+
+function openLinkedMenu(){
+  syncTop();
+  const url = String(draftData?.branding?.linkedMenuUrl || document.getElementById('linkedMenuUrlInput')?.value || '').trim();
+  if(!url){
+    showToast('ضع رابط المنيو المرتبط أولاً');
+    return;
+  }
+  window.open(url, '_blank');
+}
+
+function markDirty(state = true){
+  dirty = state;
+  const strip = document.getElementById('statusStrip');
+  const statusText = document.getElementById('statusText');
+  strip.classList.remove('ok','warn');
+  if(dirty){
+    strip.classList.add('warn');
+    statusText.textContent = 'هناك تعديلات غير منشورة';
+  } else {
+    strip.classList.add('ok');
+    statusText.textContent = 'كل التعديلات محفوظة ومنشورة';
+  }
+}
+
+function syncTop(){
+  draftData.title = document.getElementById('titleInput').value.trim() || 'QRمنيو';
+  draftData.intro = document.getElementById('introInput').value.trim();
+  draftData.branding = draftData.branding || {};
+  draftData.branding.logoText = document.getElementById('logoTextInput').value.trim() || draftData.title;
+  draftData.branding.accent = document.getElementById('accentInput').value.trim() || '#f97316';
+  draftData.branding.heroTitle = document.getElementById('heroTitleInput').value.trim();
+  draftData.branding.heroSubtitle = document.getElementById('heroSubtitleInput').value.trim();
+  draftData.branding.linkedMenuUrl = document.getElementById('linkedMenuUrlInput').value.trim();
+  draftData.video = draftData.video || {};
+  draftData.video.src = document.getElementById('videoSrcInput').value.trim();
+  draftData.video.enabled = String(document.getElementById('videoEnabledInput').value).trim().toLowerCase() === 'true';
+}
+
+function getSelectedLayoutTarget(){
+  return selectedLayoutKey || document.getElementById('layoutTargetInput').value || 'title';
+}
+
+function ensureLayoutControls(){
+  draftData = normalizeMenuData(draftData);
+  draftData.layoutControls = draftData.layoutControls || clone(ORIGINAL_DATA.layoutControls);
+}
+
+function moveLayout(direction){
+  ensureLayoutControls();
+  const key = getSelectedLayoutTarget();
+  document.getElementById('layoutTargetInput').value = key;
+  const step = 12;
+  if(direction === 'right') draftData.layoutControls[key].x += step;
+  if(direction === 'left') draftData.layoutControls[key].x -= step;
+  if(direction === 'up') draftData.layoutControls[key].y -= step;
+  if(direction === 'down') draftData.layoutControls[key].y += step;
+  markDirty(true);
+  applyPreviewLayoutControls();
+  scheduleLivePreview();
+}
+
+function scaleLayout(mode){
+  ensureLayoutControls();
+  const key = getSelectedLayoutTarget();
+  document.getElementById('layoutTargetInput').value = key;
+  const step = 0.08;
+  if(mode === 'up') draftData.layoutControls[key].scale = Math.min(2.4, Number(draftData.layoutControls[key].scale || 1) + step);
+  if(mode === 'down') draftData.layoutControls[key].scale = Math.max(0.5, Number(draftData.layoutControls[key].scale || 1) - step);
+  markDirty(true);
+  applyPreviewLayoutControls();
+  scheduleLivePreview();
+}
+
+function centerLayoutTarget(){
+  ensureLayoutControls();
+  const key = getSelectedLayoutTarget();
+  if(key === 'title') {
+    draftData.layoutControls[key].x = 0;
+    draftData.layoutControls[key].y = 0;
+  } else {
+    draftData.layoutControls[key].x = 0;
+    draftData.layoutControls[key].y = 0;
+  }
+  markDirty(true);
+  applyPreviewLayoutControls();
+  scheduleLivePreview();
+}
+
+function resizeLayout(axis, mode){
+  ensureLayoutControls();
+  const key = getSelectedLayoutTarget();
+  if(!['tabs','itemsCard','currentCard','videoCard'].includes(key)) return;
+  const step = axis === 'width' ? 24 : 18;
+  const min = axis === 'width' ? 120 : 80;
+  const current = draftData.layoutControls[key][axis] == null ? null : Number(draftData.layoutControls[key][axis]);
+  const base = current == null ? (axis === 'width' ? 240 : 160) : current;
+  const next = mode === 'up' ? base + step : base - step;
+  draftData.layoutControls[key][axis] = Math.max(min, next);
+  markDirty(true);
+  applyPreviewLayoutControls();
+  scheduleLivePreview();
+}
+
+function resetLayoutTarget(){
+  ensureLayoutControls();
+  const key = getSelectedLayoutTarget();
+  draftData.layoutControls[key] = clone(ORIGINAL_DATA.layoutControls[key]);
+  markDirty(true);
+  applyPreviewLayoutControls();
+  scheduleLivePreview();
+}
+
+function totalItems(data){
+  return (data.sections || []).reduce((sum, section) => sum + (section.items || []).filter(i => i.visible !== false).length, 0);
+}
+
+
+function updateSyncHealth(text, mode = 'warn'){
+  const box = document.getElementById('syncHealthBox');
+  if(!box) return;
+  box.className = `status-strong ${mode}`;
+  box.textContent = text;
+}
+
+function saveDraftNow(){
+  ensureDraftShape();
+  syncTop();
+  draftData = normalizeMenuData(draftData);
+  setStorageSafe(DRAFT_KEY, JSON.stringify(draftData));
+  updateSyncHealth('تم حفظ المسودة', 'ok');
+  renderStatusMeta();
+  showToast('تم حفظ المسودة');
+}
+
+async function publishNow(){
+  ensureDraftShape();
+  syncTop();
+  draftData = normalizeMenuData(draftData);
+  publishedData = clone(draftData);
+  const payload = JSON.stringify(draftData);
+  const ts = String(Date.now());
+  setStorageSafe(DRAFT_KEY, payload);
+  setStorageSafe(LIVE_PREVIEW_KEY, payload);
+  setStorageSafe(PUBLISHED_KEY, payload);
+  setStorageSafe(VERSION_KEY, ts);
+  try { await saveToApi(draftData); } catch {}
+  if(liveChannel){
+    try { liveChannel.postMessage({ type: 'live-preview', payload: draftData, ts: Number(ts), source: 'publish' }); } catch {}
+  }
+  updateSyncHealth('تم نشر التحديثات', 'ok');
+  renderStatusMeta();
+  renderPreview();
+  showToast('تم نشر التحديثات');
+}
+
+function pushLivePreview(){
+  syncTop();
+  draftData = normalizeMenuData(draftData);
+  publishedData = clone(draftData);
+  const payload = JSON.stringify(draftData);
+  const ts = String(Date.now());
+  setStorageSafe(DRAFT_KEY, payload);
+  setStorageSafe(LIVE_PREVIEW_KEY, payload);
+  setStorageSafe(PUBLISHED_KEY, payload);
+  setStorageSafe(VERSION_KEY, ts);
+  if(liveChannel){
+    try { liveChannel.postMessage({ type: 'live-preview', payload: draftData, ts: Number(ts) }); } catch {}
+  }
+}
+
+function scheduleLivePreview(){
+  if(liveSyncTimer) clearTimeout(liveSyncTimer);
+  liveSyncTimer = setTimeout(() => {
+    pushLivePreview();
+  }, 10);
+}
+
+function renderStatusMeta(){
+  const sectionsCount = draftData.sections.length;
+  const itemsCount = draftData.sections.reduce((sum, s) => sum + ((s.items || []).length), 0);
+  document.getElementById('draftInfo').textContent = `مسودة: ${sectionsCount} قسم`;
+  document.getElementById('publishInfo').textContent = `منشور: ${publishedData.sections.length} قسم`;
+  document.getElementById('lastPublishInfo').textContent = `آخر نشر: ${nowText(localStorage.getItem(VERSION_KEY))}`;
+  const box = document.getElementById('dataSummaryBox');
+  if(box) box.textContent = `إجمالي الأقسام: ${sectionsCount} — إجمالي الأصناف: ${itemsCount}`;
+  updateSyncHealth('جاهز للتعديل والنشر', 'ok');
+}
+
+function ensureAds(){
+  if(!Array.isArray(draftData.ads)) draftData.ads = [];
+}
+
+function addAd(){
+  ensureAds();
+  draftData.ads.push({ title: `إعلان ${draftData.ads.length + 1}`, src: '', duration: 8, enabled: true });
+  markDirty(true);
+  renderAdsManager();
+  renderPreview();
+  scheduleLivePreview();
+}
+
+function moveAd(index, dir){
+  ensureAds();
+  const target = index + dir;
+  if(target < 0 || target >= draftData.ads.length) return;
+  const item = draftData.ads[index];
+  draftData.ads[index] = draftData.ads[target];
+  draftData.ads[target] = item;
+  markDirty(true);
+  renderAdsManager();
+  renderPreview();
+  scheduleLivePreview();
+}
+
+function updateAd(index, key, value){
+  ensureAds();
+  if(!draftData.ads[index]) return;
+  if(key === 'duration') value = Number(value || 8);
+  if(key === 'enabled') value = !!value;
+  draftData.ads[index][key] = value;
+  markDirty(true);
+  renderPreview();
+  scheduleLivePreview();
+}
+
+function deleteAd(index){
+  ensureAds();
+  draftData.ads.splice(index, 1);
+  markDirty(true);
+  renderAdsManager();
+  renderPreview();
+  scheduleLivePreview();
+}
+
+function renderAdsManager(){
+  ensureAds();
+  const wrap = document.getElementById('adsManagerWrap');
+  if(!wrap) return;
+  if(!draftData.ads.length){
+    wrap.innerHTML = '<div class="control-note">لا توجد إعلانات بعد. أضف أول إعلان من الزر بالأعلى.</div>';
+    return;
+  }
+  wrap.innerHTML = draftData.ads.map((ad, index) => `
+    <div class="ad-card">
+      <div class="ad-head">
+        <div class="ad-title-mini">${ad.title || `إعلان ${index + 1}`}</div>
+        <label><input type="checkbox" ${ad.enabled !== false ? 'checked' : ''} onchange="updateAd(${index}, 'enabled', this.checked)"> مفعّل</label>
+      </div>
+      <div class="field"><label>اسم الإعلان</label><input value="${(ad.title || '').replace(/"/g,'&quot;')}" oninput="updateAd(${index}, 'title', this.value)"></div>
+      <div class="field"><label>رابط الفيديو</label><input value="${(ad.src || '').replace(/"/g,'&quot;')}" oninput="updateAd(${index}, 'src', this.value)" placeholder="رابط مباشر mp4 أو webm"></div>
+      <div class="ad-grid">
+        <div class="field"><label>مدة العرض بالثواني</label><input type="number" min="3" value="${Number(ad.duration || 8)}" oninput="updateAd(${index}, 'duration', this.value)"></div>
+      </div>
+      <div class="ad-actions">
+        <button class="secondary" type="button" onclick="moveAd(${index}, -1)">↑ لأعلى</button>
+        <button class="secondary" type="button" onclick="moveAd(${index}, 1)">↓ لأسفل</button>
+        <button class="ghost" type="button" onclick="deleteAd(${index})">حذف</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderSectionsEditor(){
+  ensureDraftShape();
+  const wrap = document.getElementById('sectionsWrap');
+  wrap.innerHTML = '';
+  draftData.sections.forEach((section, sIdx) => {
+    const box = document.createElement('div');
+    box.className = 'section-card';
+    box.innerHTML = `
+      <div class="section-head">
+        <div>
+          <div class="section-num">القسم ${sIdx + 1}</div>
+          <label>اسم القسم</label>
+          <input class="input" value="${esc(section.name)}" oninput="updateSectionName(${sIdx}, this.value)">
+        </div>
+        <div class="actions">
+          <button class="secondary" onclick="moveSection(${sIdx},-1)">↑</button>
+          <button class="secondary" onclick="moveSection(${sIdx},1)">↓</button>
+          <button class="blue" onclick="addItem(${sIdx})">+ صنف</button>
+          <button class="red" onclick="deleteSection(${sIdx})">حذف</button>
+        </div>
+      </div>
+      <div>
+        <label>وصف القسم</label>
+        <input class="input" value="${esc(section.subtitle || '')}" oninput="updateSectionSubtitle(${sIdx}, this.value)">
+      </div>
+      <div>
+        ${(section.items || []).map((item, iIdx) => `
+          <div class="item-row">
+            <input class="input" value="${esc(item.name)}" placeholder="اسم الصنف" oninput="updateItem(${sIdx},${iIdx},'name',this.value)">
+            <input class="input" value="${esc(item.price)}" placeholder="السعر" oninput="updateItem(${sIdx},${iIdx},'price',this.value)">
+            <div class="actions">
+              <button class="secondary" onclick="moveItem(${sIdx},${iIdx},-1)">↑</button>
+              <button class="secondary" onclick="moveItem(${sIdx},${iIdx},1)">↓</button>
+              <button class="red" onclick="deleteItem(${sIdx},${iIdx})">حذف</button>
+            </div>
+            <input class="input item-desc" value="${esc(item.desc || '')}" placeholder="وصف الصنف" oninput="updateItem(${sIdx},${iIdx},'desc',this.value)">
+          </div>
+        `).join('')}
+      </div>
+    `;
+    wrap.appendChild(box);
+  });
+  if(!draftData.sections.length){
+    wrap.innerHTML = '<div class="box sub">لا توجد أقسام الآن. ابدأ بإضافة أول قسم.</div>';
+  }
+}
+
+let selectedLayoutKey = 'title';
+let dragState = null;
+
+function applyPreviewLayoutControls(){
+  const cfg = draftData.layoutControls || clone(ORIGINAL_DATA.layoutControls);
+  const heroFrame = document.querySelector('.preview-hero');
+  const heroFrameCfg = cfg.heroFrame || {};
+  if(heroFrame){
+    heroFrame.style.width = heroFrameCfg.width ? `${Number(heroFrameCfg.width)}px` : '';
+    heroFrame.style.minHeight = heroFrameCfg.height ? `${Number(heroFrameCfg.height)}px` : '';
+  }
+  const map = {
+    title: document.getElementById('previewHeroTitle'),
+    tabs: document.getElementById('previewHeroTabsWrap'),
+    itemsCard: document.getElementById('previewItemsCard'),
+    currentCard: document.getElementById('previewCurrentCard'),
+    videoCard: document.getElementById('previewVideoCard')
+  };
+  Object.entries(map).forEach(([key, el]) => {
+    if(!el) return;
+    const item = cfg[key] || { x: 0, y: 0, scale: 1 };
+    el.style.transform = `translate(${Number(item.x || 0)}px, ${Number(item.y || 0)}px) scale(${Number(item.scale || 1)})`;
+    el.style.transformOrigin = key === 'tabs' ? 'top right' : 'top left';
+    el.style.display = item.hidden ? 'none' : '';
+    if(['tabs','itemsCard','currentCard','videoCard'].includes(key)) {
+      el.style.width = item.width ? `${Number(item.width)}px` : '';
+      el.style.height = item.height ? `${Number(item.height)}px` : '';
+    }
+    el.classList.toggle('selected', selectedLayoutKey === key);
+  });
+}
+
+function bindPreviewEditor(){
+  const editable = Array.from(document.querySelectorAll('.preview-editable'));
+  editable.forEach(el => {
+    if(el.dataset.bound === 'true') return;
+    el.dataset.bound = 'true';
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      selectedLayoutKey = el.dataset.layoutKey || 'title';
+      applyPreviewLayoutControls();
+    });
+    el.addEventListener('mousedown', (e) => {
+      if(e.button !== 0) return;
+      const key = el.dataset.layoutKey || 'title';
+      if(key === 'tabs' && !e.target.closest('.preview-tabs-drag-handle')) return;
+      if(key !== 'tabs' && e.target.closest('.preview-chip')) return;
+      selectedLayoutKey = key;
+      const target = draftData.layoutControls[selectedLayoutKey];
+      dragState = { key: selectedLayoutKey, startX: e.clientX, startY: e.clientY, baseX: Number(target.x || 0), baseY: Number(target.y || 0) };
+      el.classList.add('dragging');
+      applyPreviewLayoutControls();
+      e.preventDefault();
+    });
+    el.addEventListener('wheel', (e) => {
+      if((el.dataset.layoutKey || 'title') === 'tabs' && e.target.closest('.preview-chip')) return;
+      e.preventDefault();
+      selectedLayoutKey = el.dataset.layoutKey || 'title';
+      ensureLayoutControls();
+      const current = draftData.layoutControls[selectedLayoutKey];
+      const delta = e.deltaY < 0 ? 0.06 : -0.06;
+      current.scale = Math.max(0.5, Math.min(2.4, Number(current.scale || 1) + delta));
+      markDirty(true);
+      applyPreviewLayoutControls();
+    }, { passive: false });
+  });
+}
+
+document.addEventListener('mousemove', (e) => {
+  if(!dragState) return;
+  ensureLayoutControls();
+  const current = draftData.layoutControls[dragState.key];
+  current.x = dragState.baseX + (e.clientX - dragState.startX);
+  current.y = dragState.baseY + (e.clientY - dragState.startY);
+  markDirty(true);
+  applyPreviewLayoutControls();
+  scheduleLivePreview();
+});
+
+document.addEventListener('mouseup', () => {
+  if(!dragState) return;
+  document.querySelectorAll('.preview-editable.dragging').forEach(el => el.classList.remove('dragging'));
+  dragState = null;
+});
+
+document.addEventListener('click', (e) => {
+  if(!e.target.closest('.preview-editable')) {
+    document.querySelectorAll('.preview-editable').forEach(el => el.classList.remove('selected'));
+  }
+});
+
+function applyPreviewFrameSize(){
+  ensureDraftShape();
+  const widthInput = document.getElementById('previewFrameWidthInput');
+  const heightInput = document.getElementById('previewFrameHeightInput');
+  const width = Math.max(320, Math.min(500, Number(widthInput?.value || 430)));
+  const height = Math.max(420, Math.min(900, Number(heightInput?.value || 580)));
+  draftData.previewFrame = { width, height };
+  markDirty(true);
+  renderPreview();
+  scheduleLivePreview();
+}
+
+function resetPreviewFrameSize(){
+  ensureDraftShape();
+  draftData.previewFrame = { width: 430, height: 580 };
+  markDirty(true);
+  renderPreview();
+  scheduleLivePreview();
+}
+
+
+function renderPreviewHeroItems(section){
+  const title = document.getElementById('previewHeroItemsTitle');
+  const sub = document.getElementById('previewHeroItemsSub');
+  const count = document.getElementById('previewHeroItemsCountPill');
+  const grid = document.getElementById('previewHeroItemsGrid');
+  if(!title || !sub || !count || !grid) return;
+  if(!section){
+    title.textContent = 'اختر قسمًا';
+    sub.textContent = 'ستظهر الأصناف هنا';
+    count.textContent = '0 صنف';
+    grid.innerHTML = '';
+    return;
+  }
+  const items = (section.items || []).filter(item => item.visible !== false);
+  title.textContent = section.name || 'القسم';
+  sub.textContent = section.subtitle || 'الأصناف الخاصة بالقسم المختار';
+  count.textContent = `${items.length} صنف`;
+  grid.innerHTML = items.map(item => `
+    <div class="preview-hero-item">
+      <div class="preview-hero-item-name">${item.name || ''}</div>
+      <div class="preview-hero-item-price">${item.price || ''}</div>
+    </div>
+  `).join('');
+}
+
+function renderPreview(){
+  ensureDraftShape();
+  ensureLayoutControls();
+  if(!Array.isArray(draftData.sections)) draftData.sections = [];
+  ensurePreviewFrame();
+  const title = draftData.branding?.heroTitle || draftData.title || 'QRمنيو';
+  const desc = (draftData.branding?.heroSubtitle || draftData.intro || '');
+  document.getElementById('previewTitle').textContent = title;
+  document.getElementById('previewIntro').textContent = 'المعاينة الآن بنفس منطق المنيو تقريبًا لتسهيل الترتيب';
+  document.getElementById('previewHeroTitle').textContent = title;
+  document.getElementById('previewBrandName').textContent = draftData.branding?.logoText || draftData.title || 'QRمنيو';
+  applyPreviewFrame();
+  document.getElementById('previewHeroDesc').textContent = desc;
+  const frame = draftData.previewFrame || { width: 980, height: 620 };
+  const hero = document.querySelector('.preview-hero');
+  if(hero){ hero.style.width = `min(100%, ${Number(frame.width || 430)}px)`; hero.style.minHeight = `${Number(frame.height || 580)}px`; }
+  const frameWidthInput = document.getElementById('previewFrameWidthInput');
+  const frameHeightInput = document.getElementById('previewFrameHeightInput');
+  if(frameWidthInput) frameWidthInput.value = Number(frame.width || 430);
+  if(frameHeightInput) frameHeightInput.value = Number(frame.height || 580);
+  document.getElementById('statItems').textContent = totalItems(draftData);
+
+  const chips = document.getElementById('sectionChips');
+  const itemsWrap = document.getElementById('previewItems');
+  const video = document.getElementById('previewHeroVideo');
+  const videoPlaceholder = document.getElementById('previewVideoPlaceholder');
+  const visibleAds = (draftData.ads || []).filter(ad => ad && ad.enabled !== false && ad.src);
+  chips.innerHTML = '';
+  itemsWrap.innerHTML = '';
+
+  if(!draftData.sections.length){
+    itemsWrap.innerHTML = '<div class="empty">لا توجد أقسام للمعاينة</div>';
+    document.getElementById('statCurrent').textContent = '—';
+  } else {
+    if(activeSection >= draftData.sections.length) activeSection = draftData.sections.length - 1;
+    if(activeSection < 0) activeSection = 0;
+    draftData.sections.forEach((section, index) => {
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'preview-chip' + (index === activeSection ? ' active' : '');
+      chip.textContent = `${section.name} (${(section.items || []).length})`;
+      chip.onclick = () => { activeSection = index; renderPreview(); };
+      chips.appendChild(chip);
+    });
+    const current = draftData.sections[activeSection];
+    document.getElementById('statCurrent').textContent = current?.name || '—';
+    const items = current?.items || [];
+    const pill = document.getElementById('previewHeroItemsCountPill');
+    const pTitle = document.getElementById('previewHeroItemsTitle');
+    const pSub = document.getElementById('previewHeroItemsSub');
+    if(pill) pill.textContent = `${items.length} صنف`;
+    if(pTitle) pTitle.textContent = current?.name || 'اختر قسمًا';
+    if(pSub) pSub.textContent = current?.subtitle || 'الأصناف الخاصة بالقسم المختار';
+    if(!items.length){
+      itemsWrap.innerHTML = '<div class="empty">لا توجد أصناف في هذا القسم</div>';
+    } else {
+      items.forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'item';
+        row.innerHTML = `<div class="item-main"><div class="item-name">${item.name || 'صنف بدون اسم'}</div><div class="item-text">${item.desc || 'بدون وصف'}</div></div><div class="item-price">${item.price || '—'}</div>`;
+        itemsWrap.appendChild(row);
+      });
+    }
+  }
+
+  if(draftData.video?.enabled && draftData.video?.src){
+    video.src = draftData.video.src;
+    video.muted = true;
+    video.loop = true;
+    video.autoplay = true;
+    video.playsInline = true;
+    video.setAttribute('playsinline','');
+    video.setAttribute('webkit-playsinline','');
+    video.defaultMuted = true;
+    video.setAttribute('preload','metadata');
+    video.style.display = 'block';
+    video.style.height = `${draftData.video.height || 340}px`;
+    video.muted = true;
+    video.loop = true;
+    video.autoplay = true;
+    video.playsInline = true;
+    videoPlaceholder.style.display = 'none';
+    video.muted = true;
+    video.defaultMuted = true;
+    const playPromise = video.play?.();
+    if(playPromise && typeof playPromise.catch === 'function') playPromise.catch(() => { videoPlaceholder.textContent = 'تعذر تشغيل الفيديو من هذا الرابط'; videoPlaceholder.style.display = 'flex'; video.style.display = 'none'; });
+  } else {
+    video.pause?.();
+    video.removeAttribute('src');
+    video.style.display = 'none';
+    videoPlaceholder.style.display = 'block';
+  }
+
+  document.getElementById('layoutTargetInput').value = selectedLayoutKey || 'title';
+  bindPreviewEditor();
+  applyPreviewLayoutControls();
+}
+
+function renderAll(){
+  draftData = normalizeMenuData(draftData);
+  document.getElementById('titleInput').value = draftData.title || '';
+  document.getElementById('introInput').value = draftData.intro || '';
+  document.getElementById('logoTextInput').value = draftData.branding?.logoText || '';
+  document.getElementById('accentInput').value = draftData.branding?.accent || '#f97316';
+  document.getElementById('heroTitleInput').value = draftData.branding?.heroTitle || '';
+  document.getElementById('heroSubtitleInput').value = draftData.branding?.heroSubtitle || '';
+  document.getElementById('linkedMenuUrlInput').value = draftData.branding?.linkedMenuUrl || '';
+  document.getElementById('videoSrcInput').value = draftData.video?.src || '';
+  document.getElementById('videoEnabledInput').value = draftData.video?.enabled ? 'true' : 'false';
+  renderStatusMeta();
+  renderSectionsEditor();
+  renderPreview();
+  bindLiveTopInputs();
+}
+
+function safeRenderAll(){
+  try {
+    renderAll();
+  } catch {
+    draftData = normalizeMenuData(draftData || ORIGINAL_DATA);
+    activeSection = 0;
+    renderAll();
+  }
+}
+
+async function bootstrapAdmin(){
+  const apiData = await loadFromApi();
+  if(apiData && typeof apiData === 'object'){
+    draftData = normalizeMenuData(apiData);
+    publishedData = clone(draftData);
+  }
+  bootstrapAdmin();
+}
+
+function updateSectionName(index, value){ draftData.sections[index].name = value; markDirty(); renderPreview(); renderStatusMeta(); scheduleLivePreview(); }
+function updateSectionSubtitle(index, value){ draftData.sections[index].subtitle = value; markDirty(); renderPreview(); scheduleLivePreview(); }
+function updateItem(s, i, key, value){ draftData.sections[s].items[i][key] = value; markDirty(); renderPreview(); scheduleLivePreview(); }
+function addSection(){ draftData.sections.push({ name:'قسم جديد', subtitle:'أصناف وأسعار', visible:true, items:[] }); activeSection = draftData.sections.length - 1; markDirty(); safeRenderAll(); scheduleLivePreview(); }
+function deleteSection(index){ draftData.sections.splice(index,1); if(activeSection >= draftData.sections.length) activeSection = draftData.sections.length - 1; if(activeSection < 0) activeSection = 0; markDirty(); safeRenderAll(); scheduleLivePreview(); }
+function moveSection(index, dir){ const arr = draftData.sections; const next = index + dir; if(next < 0 || next >= arr.length) return; [arr[index],arr[next]] = [arr[next],arr[index]]; activeSection = next; markDirty(); safeRenderAll(); }
+function addItem(sectionIndex){ draftData.sections[sectionIndex].items.push({ name:'صنف جديد', desc:'', price:'0.00 ج', visible:true }); activeSection = sectionIndex; markDirty(); safeRenderAll(); }
+function deleteItem(sectionIndex, itemIndex){ draftData.sections[sectionIndex].items.splice(itemIndex,1); markDirty(); safeRenderAll(); scheduleLivePreview(); }
+function moveItem(s, i, dir){ const arr = draftData.sections[s].items; const next = i + dir; if(next < 0 || next >= arr.length) return; [arr[i],arr[next]] = [arr[next],arr[i]]; markDirty(); safeRenderAll(); }
+
+function saveDraft(){
+  if(isSaving) return;
+  isSaving = true;
+  syncTop();
+  draftData = normalizeMenuData(draftData);
+  const ok = setStorageSafe(DRAFT_KEY, JSON.stringify(draftData));
+  pushLivePreview();
+  markDirty(true);
+  applyPreviewLayoutControls();
+  if(ok) showToast('تم حفظ المسودة');
+  isSaving = false;
+}
+
+function publishMenu(){
+  if(isPublishing) return;
+  isPublishing = true;
+  syncTop();
+  draftData = normalizeMenuData(draftData);
+  const draftSaved = setStorageSafe(DRAFT_KEY, JSON.stringify(draftData));
+  setStorageSafe(LIVE_PREVIEW_KEY, JSON.stringify(draftData));
+  if(liveChannel){ try { liveChannel.postMessage({ type: 'live-preview', payload: draftData, ts: Date.now() }); } catch {} }
+  publishedData = clone(draftData);
+  const publishedSaved = setStorageSafe(PUBLISHED_KEY, JSON.stringify(publishedData));
+  const versionSaved = setStorageSafe(VERSION_KEY, String(Date.now()));
+  if(draftSaved && publishedSaved && versionSaved){
+    markDirty(false);
+    safeRenderAll();
+    showToast('تم نشر التحديثات على QRمنيو');
+  }
+  isPublishing = false;
+}
+
+function loadPublished(){
+  if(isLoadingPublished) return;
+  isLoadingPublished = true;
+  publishedData = normalizeMenuData(safeParse(localStorage.getItem(PUBLISHED_KEY), clone(ORIGINAL_DATA)) || clone(ORIGINAL_DATA));
+  draftData = clone(publishedData);
+  setStorageSafe(LIVE_PREVIEW_KEY, JSON.stringify(draftData));
+  if(liveChannel){ try { liveChannel.postMessage({ type: 'live-preview', payload: draftData, ts: Date.now() }); } catch {} }
+  activeSection = 0;
+  markDirty(false);
+  safeRenderAll();
+  showToast('تم تحميل النسخة المنشورة');
+  isLoadingPublished = false;
+}
+
+function cleanMenuData(){
+  syncTop();
+  draftData = normalizeMenuData(draftData);
+  setStorageSafe(LIVE_PREVIEW_KEY, JSON.stringify(draftData));
+  if(liveChannel){ try { liveChannel.postMessage({ type: 'live-preview', payload: draftData, ts: Date.now() }); } catch {} }
+  activeSection = 0;
+  markDirty(true);
+  applyPreviewLayoutControls();
+  scheduleLivePreview();
+  showToast('تم تنظيف البيانات');
+}
+
+function resetDraft(){
+  draftData = normalizeMenuData(clone(ORIGINAL_DATA));
+  setStorageSafe(LIVE_PREVIEW_KEY, JSON.stringify(draftData));
+  if(liveChannel){ try { liveChannel.postMessage({ type: 'live-preview', payload: draftData, ts: Date.now() }); } catch {} }
+  activeSection = 0;
+  markDirty(true);
+  applyPreviewLayoutControls();
+  scheduleLivePreview();
+}
+
+
+function bindLiveTopInputs(){
+  [
+    'titleInput','introInput','logoTextInput','accentInput','heroTitleInput','heroSubtitleInput','linkedMenuUrlInput','videoSrcInput','videoEnabledInput'
+  ].forEach(id => {
+    const el = document.getElementById(id);
+    if(!el || el.dataset.liveBound === 'true') return;
+    el.dataset.liveBound = 'true';
+    const handler = () => {
+      syncTop();
+      markDirty(true);
+      renderPreview();
+      renderStatusMeta();
+      scheduleLivePreview();
+    };
+    el.addEventListener('input', handler);
+    el.addEventListener('change', handler);
+  });
+  const selector = document.getElementById('layoutTargetInput');
+  if(selector && selector.dataset.liveBound !== 'true'){
+    selector.dataset.liveBound = 'true';
+    selector.addEventListener('change', () => {
+      selectedLayoutKey = selector.value || 'title';
+      applyPreviewLayoutControls();
+    });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  markDirty(false);
+  safeRenderAll();
+  pushLivePreview();
+});
+</script>
+</body>
+</html>
